@@ -12,7 +12,7 @@ public class Item {
 	private static final String RATING = "rating";
 	private static final String ADDRESS = "address";
 	private static final String CATEGORIES = "categories";
-	private static final String IMAGE_URL = "categories";
+	private static final String IMAGE_URL = "image_url";
 	private static final String URL = "url";
 	private static final String DISTANCE = "distance";
 	
@@ -109,5 +109,12 @@ public class Item {
 	
 	private Item(ItemBuilder builder) {
 		this.itemID = builder.itemID;
+		this.name = builder.name;
+		this.rating = builder.rating;
+		this.address = builder.address;
+		this.categories = builder.categories;
+		this.imageURL = builder.imageURL;
+		this.url = builder.url;
+		this.distance = builder.distance;
 	}
 }

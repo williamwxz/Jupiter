@@ -14,6 +14,7 @@ public class RpcHelper {
 		try {
 			response.setContentType("application/json");
 			response.addHeader("Access-Control-Allow-Origin", "*");
+			out.println(obj);
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -25,6 +26,7 @@ public class RpcHelper {
 		try {
 			response.setContentType("application/json");
 			response.addHeader("Access-Control-Allow-Origin", "*");
+			out.println(obj);
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
