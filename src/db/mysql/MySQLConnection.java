@@ -3,7 +3,9 @@ package db.mysql;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -96,20 +98,86 @@ public class MySQLConnection implements DBConnection{
 
 	@Override
 	public Set<String> getFavoriteItemIds(String userId) {
-		// TODO Auto-generated method stub
-		return null;
+		if (conn == null) {
+			return new HashSet<>();
+		}
+		
+		Set<String> favoriteItemIds = new HashSet<>();
+		
+		try {
+			String sql = "SELECT item_id FROM history WHERE user_id = ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, userId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String itemId = rs.getString("item_id");
+				favoriteItemIds.add(itemId);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return favoriteItemIds;
 	}
 
 	@Override
 	public Set<Item> getFavoriteItems(String userId) {
-		// TODO Auto-generated method stub
-		return null;
+		if(conn==null) {
+			System.err.println("DB connection has not been init");
+			return new HashSet<>();
+		}
+		Set<Item> favoriteItems = new HashSet<>();
+		Set<String> favoriteItemsIds = getFavoriteItemIds(userId);
+		
+		try {
+			String query = "SELECT * FROM items WHERE item_id=?";
+			PreparedStatement st = conn.prepareStatement(query);
+			for (String itemId: favoriteItemsIds) {
+				st.setString(1, itemId);
+				ResultSet rs = st.executeQuery();
+				
+				Item.ItemBuilder builder = new Item.ItemBuilder();
+				while (rs.next()) {
+					builder.setItemID(rs.getString("item_id"));
+					builder.setName(rs.getString("name"));
+					builder.setAddress(rs.getString("address"));
+					builder.setImageURL(rs.getString("image_url"));
+					builder.setUrl(rs.getString("url"));
+					builder.setCategories(getCategories(userId));
+					builder.setRating(rs.getDouble("rating"));
+					builder.setDistance(rs.getDouble("distance"));
+				}
+				favoriteItems.add(builder.build());
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return favoriteItems;
 	}
 
 	@Override
 	public Set<String> getCategories(String itemId) {
 		// TODO Auto-generated method stub
-		return null;
+		if (conn==null) {
+			System.err.println("DB connection has not init");
+			return new HashSet<>();
+		}
+		Set<String> categories = new HashSet<>();
+		try {
+			String query = "SELECT category FROM categories WHERE item_id=?";
+			PreparedStatement st = conn.prepareStatement(query);
+			st.setString(1, itemId);
+			ResultSet rs = st.executeQuery();
+			
+			while (rs.next()) {
+				categories.add(rs.getString("category"));
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return categories;
 	}
 
 	@Override

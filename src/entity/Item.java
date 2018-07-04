@@ -7,6 +7,30 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Item {
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((itemID == null) ? 0 : itemID.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		if (itemID == null) {
+			if (other.itemID != null)
+				return false;
+		} else if (!itemID.equals(other.itemID))
+			return false;
+		return true;
+	}
+
 	private static final String ITEM_ID = "item_id"; 
 	private static final String NAME = "name";
 	private static final String RATING = "rating";

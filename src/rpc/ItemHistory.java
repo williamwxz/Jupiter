@@ -3,6 +3,7 @@ package rpc;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import db.*;
+import entity.Item;
 
 /**
  * Servlet implementation class ItemHistory
@@ -36,15 +38,30 @@ public class ItemHistory extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String userID = request.getParameter("user_id");
+		JSONArray array = new JSONArray();
+		
+		DBConnection conn = DBConnectionFactory.getConnection();
+		try {
+			Set<Item> items = conn.getFavoriteItems(userID);
+			for (Item item:items) {
+				JSONObject obj = item.toJSONObject();
+				obj.put("favorite", true);
+				
+				array.put(obj);
+			}
+		}catch (Exception e) {
+			
+		}finally {
+			conn.close();
+		}
+		RpcHelper.writeJsonArray(response, array);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		DBConnection conn = DBConnectionFactory.getConnection();
 		try {
 			JSONObject input = RpcHelper.readJSONObject(request);
