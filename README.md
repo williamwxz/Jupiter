@@ -1,5 +1,6 @@
 # Jupiter
-**Location-Based Recommendation System**
+**Location-Based Events Recommendation System**
+
 Current Version v1.0
 
 Update v1.0
