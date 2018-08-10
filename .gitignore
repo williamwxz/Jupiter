@@ -8,3 +8,4 @@ Jupiter.iml
 .idea/misc.xml
 bin/
 .idea/
+*.war

@@ -1,8 +1,8 @@
 package db.mysql;
 
 public class MySQLUtil {
-	private static final String HOSTNAME = "localhost";
-	private static final String PORT_NUM = "8889"; 
+	private static final String HOSTNAME = "localhost";//test-mysql, localhost
+	private static final String PORT_NUM = "3309"; //3309
 	public static final String DB_NAME = "laiproject";
 	private static final String USERNAME = "root";
 	private static final String PASSWORD = "root";
