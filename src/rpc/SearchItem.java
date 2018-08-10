@@ -15,7 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import db.*;
-import entity.Item;
+import entity.*;
 
 /**
  * Servlet implementation class SearchItem
