@@ -66,6 +66,12 @@ ul {
 	padding-right: 10px;
 }
 
+#loginout {
+	color: #F9F9F9;
+	font-weight: 400;
+	text-decoration: none;	
+}
+
 /**
  * main container
  */

@@ -10,11 +10,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import db.*;
+import db.DBConnection;
+import db.DBConnectionFactory;
 import entity.Item;
 
 /**
@@ -38,6 +40,13 @@ public class ItemHistory extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// invalidate the session if exists
+//		HttpSession session = request.getSession(false);
+//		if (session != null) {
+//			session.invalidate();
+//		}
+//		response.sendRedirect("index.html");
+		
 		String userID = request.getParameter("user_id");
 		JSONArray array = new JSONArray();
 		
@@ -62,6 +71,13 @@ public class ItemHistory extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// invalidate the session if exists
+//		HttpSession session = request.getSession(false);
+//		if (session != null) {
+//			session.invalidate();
+//		}
+//		response.sendRedirect("index.html");
+		
 		DBConnection conn = DBConnectionFactory.getConnection();
 		try {
 			JSONObject input = RpcHelper.readJSONObject(request);
@@ -87,7 +103,13 @@ public class ItemHistory extends HttpServlet {
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		// invalidate the session if exists
+//		HttpSession session = request.getSession(false);
+//		if (session != null) {
+//			session.invalidate();
+//		}
+//		response.sendRedirect("index.html");
+		
 		DBConnection conn = DBConnectionFactory.getConnection();
 		try {
 			JSONObject input = RpcHelper.readJSONObject(request);

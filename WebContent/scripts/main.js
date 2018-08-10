@@ -17,8 +17,15 @@
         $('fav-btn').addEventListener('click', loadFavoriteItems);
         $('recommend-btn').addEventListener('click', loadRecommendedItems);
 
+        logined = false;
         var welcomeMsg = $('welcome-msg');
-        welcomeMsg.innerHTML = 'Welcome, ' + user_fullname;
+        var loginout = $('loginout');
+        if (logined){
+        	welcomeMsg.innerHTML = 'Welcome, ' + user_fullname;
+        	loginout.innerHTML = 'Logout';
+        }else{
+        	loginout.innerHTML = 'Login';
+        }
         initGeoLocation();
     }
 
