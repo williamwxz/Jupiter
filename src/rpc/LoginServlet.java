@@ -39,18 +39,15 @@ public class LoginServlet extends HttpServlet {
 	   	 try {
 			JSONObject msg = new JSONObject();
 
-			JSONObject input = RpcHelper.readJSONObject(request);
-			String userId = input.getString(USER_ID);
-
 			HttpSession session = request.getSession();
 			if (session.getAttribute(USER) == null) {
 				response.setStatus(403);
 				msg.put("status", "Session Invalid");
 			} else {
-				String user = (String) session.getAttribute(USER);
-				String name = connection.getFullname(userId);
+				String user_id = (String) session.getAttribute(USER);
+				String name = connection.getFullname(user_id);
 				msg.put("status", "OK");
-				msg.put("user_id", user);
+				msg.put("user_id", user_id);
 				msg.put("name", name);
 			}
 			RpcHelper.writeJsonObect(response, msg);

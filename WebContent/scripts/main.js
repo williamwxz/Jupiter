@@ -56,8 +56,14 @@
 
 			if (result.status === 'OK') {
 				onSessionValid(result);
+			}else{
+				onSessionInvalid();
 			}
-		});
+		},
+		function(res){
+			onSessionInvalid();
+		}
+		);
 	}
 
 	function onSessionValid(result) {
@@ -151,7 +157,7 @@
 		password = md5(username + md5(password));
 
 		// The request parameters
-		var url = './LoginServlet';
+		var url = './login';
 		var params = 'user_id=' + username + '&password=' + password;
 		var req = JSON.stringify({});
 
@@ -266,7 +272,7 @@
      */
     function ajax(method, url, data, callback, errorHandler) {
         var xhr = new XMLHttpRequest();
-
+        errorHandler = (errorHandler)?errorHandler:stdErrorHandler;
         xhr.open(method, url, true);
 
         xhr.onload = function() {
@@ -291,6 +297,9 @@
         }
     }
 
+    function stdErrorHandler(){
+    	alert("Error !!")
+    }
     // -------------------------------------
     // AJAX call server-side APIs
     // -------------------------------------
