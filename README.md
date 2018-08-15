@@ -1,7 +1,9 @@
 # Jupiter
 **Location-Based Events Recommendation System**
 
-Current Version v2.0
+Current Version v3.0
+Update v3.0
+- Support MongoDB
 
 Update v2.0
 - Support docker
