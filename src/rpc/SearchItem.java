@@ -24,7 +24,7 @@ import entity.Item;
 @WebServlet(name = "search", urlPatterns = { "/search" })
 public class SearchItem extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private static final String USER_ID = "user_id";
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -39,11 +39,11 @@ public class SearchItem extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// allow access only if session exists
 		HttpSession session = request.getSession();
-		if (session.getAttribute("user") == null) {
+		if (session == null) {
 			response.setStatus(403);
 			return;
 		}
-		String userId = session.getAttribute("user_id").toString();
+		String userId = session.getAttribute(USER_ID).toString();
 		
 		double lat = Double.parseDouble(request.getParameter("lat"));
 		double lon = Double.parseDouble(request.getParameter("lon"));

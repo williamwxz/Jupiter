@@ -21,7 +21,7 @@ import entity.Item;
 @WebServlet(name = "recommendation", urlPatterns = { "/recommendation" })
 public class RecommendItem extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private static final String USER_ID = "user_id";
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -34,14 +34,16 @@ public class RecommendItem extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// invalidate the session if exists
-//		HttpSession session = request.getSession(false);
-//		if (session != null) {
-//			session.invalidate();
-//		}
+		// allow access only if session exists
+		HttpSession session = request.getSession();
+		if (session == null) {
+			response.setStatus(403);
+			return;
+		}
+		String userId = session.getAttribute(USER_ID).toString();
 		
 		JSONArray array = new JSONArray();
-		String userId = request.getParameter("user_id");
+//		String userId = request.getParameter("user_id");
 		double lat = Double.parseDouble(request.getParameter("lat"));
 		double lon = Double.parseDouble(request.getParameter("lon"));
 		
