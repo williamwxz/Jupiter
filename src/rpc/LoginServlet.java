@@ -21,7 +21,6 @@ import db.DBConnectionFactory;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private static final DBConnection connection = DBConnectionFactory.getConnection();
     private static final String USER_ID = "user_id";
     private static final String USER = "user";
     /**
@@ -36,16 +35,17 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		DBConnection conn = DBConnectionFactory.getConnection();
 	   	 try {
 			JSONObject msg = new JSONObject();
 
-			HttpSession session = request.getSession();
-			if (session.getAttribute(USER) == null) {
+			HttpSession session = request.getSession(false);
+			if (session == null) {
 				response.setStatus(403);
 				msg.put("status", "Session Invalid");
 			} else {
-				String user_id = (String) session.getAttribute(USER);
-				String name = connection.getFullname(user_id);
+				String user_id = (String) session.getAttribute(USER_ID);
+				String name = conn.getFullname(user_id);
 				msg.put("status", "OK");
 				msg.put("user_id", user_id);
 				msg.put("name", name);
@@ -60,20 +60,24 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		DBConnection conn = DBConnectionFactory.getConnection();
 	   	 try {
+	   		 JSONObject input = RpcHelper.readJSONObject(request);
+	   		 String userID = input.getString(USER_ID);
+	   		 String pwd = input.getString("password");
+	   		 
 	   		 JSONObject msg = new JSONObject();
 	   		 
-	   		 String user = request.getParameter("user_id");
-	   		 String pwd = request.getParameter("password");
-	   		 if (connection.verifyLogin(user, pwd)) {
+	   		 if (conn.verifyLogin(userID, pwd)) {
+	   			 System.out.println("Valid user: "+userID);
 	   			 HttpSession session = request.getSession();
-	   			 session.setAttribute("user", user);
+	   			 session.setAttribute(USER_ID, userID);
 	   			 // setting session to expire in 10 minutes
 	   			 session.setMaxInactiveInterval(10 * 60);
 	   			 // Get user name
-	   			 String name = connection.getFullname(user);
+	   			 String name = conn.getFullname(userID);
 	   			 msg.put("status", "OK");
-	   			 msg.put("user_id", user);
+	   			 msg.put("user_id", userID);
 	   			 msg.put("name", name);
 	   		 } else {
 	   			 response.setStatus(401);

@@ -158,10 +158,12 @@
 
 		// The request parameters
 		var url = './login';
-		var params = 'user_id=' + username + '&password=' + password;
-		var req = JSON.stringify({});
+		var req = JSON.stringify({
+			user_id:username,
+			password:password,
+		});
 
-		ajax('POST', url + '?' + params, req,
+		ajax('POST', url, req,
 		// successful callback
 		function(res) {
 			var result = JSON.parse(res);
@@ -276,11 +278,13 @@
         xhr.open(method, url, true);
 
         xhr.onload = function() {
-        	if (xhr.status === 200) {
-        		callback(xhr.responseText);
-        	} else {
-        		errorHandler();
-        	}
+    		if (xhr.status === 200) {
+				callback(xhr.responseText);
+			} else if (xhr.status === 403) {
+				onSessionInvalid();
+			} else {
+				errorHandler();
+			}
         };
 
         xhr.onerror = function() {
