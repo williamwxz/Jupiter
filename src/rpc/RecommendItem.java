@@ -43,7 +43,6 @@ public class RecommendItem extends HttpServlet {
 		String userId = session.getAttribute(USER_ID).toString();
 		
 		JSONArray array = new JSONArray();
-//		String userId = request.getParameter("user_id");
 		double lat = Double.parseDouble(request.getParameter("lat"));
 		double lon = Double.parseDouble(request.getParameter("lon"));
 		

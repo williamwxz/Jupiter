@@ -48,7 +48,6 @@ public class SearchItem extends HttpServlet {
 		double lat = Double.parseDouble(request.getParameter("lat"));
 		double lon = Double.parseDouble(request.getParameter("lon"));
 		String keyword = request.getParameter("term");
-//		String userId = request.getParameter("user_id");
 		
 		DBConnection connection = DBConnectionFactory.getConnection();
 		try {

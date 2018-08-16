@@ -41,13 +41,12 @@ public class ItemHistory extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// invalidate the session if exists
-//		HttpSession session = request.getSession(false);
-//		if (session != null) {
-//			session.invalidate();
-//		}
-//		response.sendRedirect("index.html");
-		
-		String userID = request.getParameter("user_id");
+		HttpSession session = request.getSession();
+		if (session == null) {
+			response.setStatus(403);
+			return;
+		}
+		String userID = session.getAttribute(USER_ID).toString();
 		JSONArray array = new JSONArray();
 		
 		DBConnection conn = DBConnectionFactory.getConnection();
@@ -72,16 +71,16 @@ public class ItemHistory extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// invalidate the session if exists
-//		HttpSession session = request.getSession(false);
-//		if (session != null) {
-//			session.invalidate();
-//		}
-//		response.sendRedirect("index.html");
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			response.setStatus(403);
+			return;
+		}
+		String userID = session.getAttribute(USER_ID).toString();
 		
 		DBConnection conn = DBConnectionFactory.getConnection();
 		try {
 			JSONObject input = RpcHelper.readJSONObject(request);
-			String userID = input.getString(USER_ID);
 			
 			JSONArray array = input.getJSONArray(FAVORITE);
 			List<String> itemIDs = new ArrayList<>();
@@ -103,17 +102,16 @@ public class ItemHistory extends HttpServlet {
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// invalidate the session if exists
-//		HttpSession session = request.getSession(false);
-//		if (session != null) {
-//			session.invalidate();
-//		}
-//		response.sendRedirect("index.html");
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			response.setStatus(403);
+			return;
+		}
+		String userId = session.getAttribute(USER_ID).toString();
 		
 		DBConnection conn = DBConnectionFactory.getConnection();
 		try {
 			JSONObject input = RpcHelper.readJSONObject(request);
-			String userId = input.getString(USER_ID);
 			
 			JSONArray array = input.getJSONArray(FAVORITE);
 			List<String> itemIDs = new ArrayList<>();
